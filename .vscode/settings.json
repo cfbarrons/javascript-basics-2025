@@ -1,7 +1,0 @@
-{
-	"editor.formatOnSave": true,
-	"prettier.useTabs": true,
-	"prettier.tabWidth": 4,
-	"files.autoSave": "afterDelay",
-	"files.autoSaveDelay": 1000
-}
