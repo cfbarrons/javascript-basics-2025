@@ -9,7 +9,7 @@ const CANVAS = document.getElementById("game-canvas");
 const CTX = CANVAS.getContext("2d");
 
 // const HEIGHT = 600;
-// const WIDTH = 1300;
+// const WIDTH = 800;
 
 CANVAS.height = window.innerHeight;
 CANVAS.width = window.innerWidth;
@@ -17,35 +17,36 @@ CANVAS.width = window.innerWidth;
 class Box {
 	/**
 	 *
-	 * @param {*} x
-	 * @param {*} y
-	 * @param {*} color
+	 * @param { number } x
+	 * @param { number } y
+	 * @param { string } color
 	 */
-
 	constructor(x, y, color) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
 
-		this.speed = 1;
+		this.speed = 10;
 		this.width = 50;
 		this.height = this.width;
 
 		this.xDirection = 1;
 		this.yDirection = 1;
+
+		//this.alpha = 1.0;
 	}
 
 	draw() {
+		//CTX.globalAlpha = this.alpha;
 		CTX.fillStyle = this.color;
-
 		CTX.fillRect(this.x, this.y, this.width, this.height);
 	}
 
 	update() {
 		let top = this.y;
-		let bottom = this.y + this.width;
+		let bottom = this.y + this.height;
 		let left = this.x;
-		let right = this.x + this.height;
+		let right = this.x + this.width;
 
 		if (top < 0) {
 			// colliding with top
@@ -60,7 +61,7 @@ class Box {
 		if (left < 0) {
 			// colliding with left
 			this.xDirection = 1;
-			this.x;
+			this.x = 0;
 		} else if (right > CANVAS.width) {
 			// colliding with right
 			this.xDirection = -1;
@@ -72,87 +73,55 @@ class Box {
 	}
 }
 
-// // class Circle {
-// 	constructor(x, y, color) {
-// 		this.x = x;
-// 		this.y = y;
-// 		this.color = color;
-
-// 		this.speed = 10;
-// 		this.width = 50;
-// 		this.height = this.width;
-
-// 		this.xDirection = 1;
-// 		this.yDirection = 1;
-// 	}
-
-// 	draw() {
-// 		CTX.beginPath();
-// 		CTX.arc(60, 60, 50, 0, 2 * Math.PI, false);
-// 		CTX.fill();
-// 	}
-
-// 	update() {
-// 		let top = this.y;
-// 		let bottom = this.y + this.width;
-// 		let left = this.x;
-// 		let right = this.x + this.height;
-
-// 		if (top < 0) {
-// 			// colliding with top
-// 			this.yDirection = 1;
-// 		} else if (bottom > CANVAS.height) {
-// 			// colliding with bottom
-// 			this.yDirection = -1;
-// 		}
-
-// 		if (left < 0) {
-// 			// colliding with left
-// 			this.xDirection = 1;
-// 		} else if (right > CANVAS.width) {
-// 			// colliding with right
-// 			this.xDirection = -1;
-// 		}
-
-// 		this.x += this.xDirection * this.speed;
-// 		this.y += this.yDirection * this.speed;
-// 	}
-// // }
-
 /** @type { Box[] } */
 let boxes = [];
 
-let circles = [];
+let colors = [
+	"Purple",
+	 "blue",
+	  "green",
+	   "Olive",
+	 "	DarkOliveGreen",
+	 "Navy",
+	 "DarkCyan",
+	 "RebeccaPurple",
+	 "DarkKhaki",
+	 "SteelBlue"
+	,"Dark teal","",
+	"DarkLimeGreen",
+	"LimeGreen",
+	"DarkSlateGray","teal","brown","","","","","","","","","","","","","","","","","","","","","","","","","","",""
+];
+	
+//CTX.globalAlpha = 0.2;
 
-let colors = ["black", "green", "blue", "purple", "gray"];
-CTX.globalAlpha * 3;
-for (let i = 0; i <= 5000; i++) {
+for (let i = 0; i <= 1000; i++) {
 	let color = colors[Math.floor(Math.random() * colors.length)];
+
 	let box = new Box(CANVAS.width / 2, CANVAS.height / 2, color);
+	//box.alpha = 0.2;
+
 	box.width = 10;
 	box.height = 10;
-
 	box.x = Math.random() * (CANVAS.width - 100);
 	box.y = Math.random() * (CANVAS.height - 100);
-	box.speed = Math.random() * 1 + 0.1;
+	box.speed=  (Math.random () * 1 + 1);
 	boxes.push(box);
 }
 
 let currentTimestamp = 0;
 
-
 /**
- * 
- * @param {*} timestamp 
- */ 
+ *
+ * @param { number } timestamp
+ */
 function drawLoop(timestamp) {
-		CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
+	//CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
 
-	boxes.forEach((n) => {
-		n.draw();
-		n.update();
+	boxes.forEach((b) => {
+		b.draw();
+		b.update();
 	});
-
 
 	// console.log(elapsedTime);
 	requestAnimationFrame(drawLoop);
@@ -163,8 +132,6 @@ requestAnimationFrame(drawLoop);
 function onResize() {
 	CANVAS.height = window.innerHeight;
 	CANVAS.width = window.innerWidth;
-
-	// console.log(CANVAS.height, CANVAS.width)
 }
 
 window.addEventListener("resize", onResize);
